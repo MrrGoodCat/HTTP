@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Tasks>
+	<Task id="1" name="Swapper" description="Check swap method.">
+		<Method className="SwapWithXML.abSwap" methodName="Swap">
+			<TestSet>
+				<Test id="1" description="Check swap method with Int32.">
+					<Input>
+						<Parameter type="System.Int32">1</Parameter>
+						<Parameter type="System.Int32">2</Parameter>
+					</Input>
+					<Output>
+						<Parameter type="System.Int32">2</Parameter>
+						<Parameter type="System.Int32">1</Parameter>
+					</Output>
+				</Test>
+				<Test id="2" description="Check swap method with String.">
+					<Input>
+						<Parameter type="System.String">a</Parameter>
+						<Parameter type="System.String">b</Parameter>
+					</Input>
+					<Output>
+						<Parameter type="System.String">b</Parameter>
+						<Parameter type="System.String">a</Parameter>
+					</Output>
+				</Test>
+ 				<!-- <Test id="3" description="Check sorting method of String.">
+					<Input>
+						<Parameter type="System.Array" arrayItemType="System.String">
+							<Item>b</Item>
+							<Item>ab</Item>
+							<Item>a</Item>
+						</Parameter>
+					</Input>
+					<Output>
+						<Parameter type="System.Array" arrayItemType="System.String">
+							<Item>a</Item>
+							<Item>ab</Item>
+							<Item>b</Item>
+						</Parameter>
+					</Output>
+				</Test> -->
+			</TestSet>
+		</Method>
+	</Task>
+</Tasks>
