@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="model\InputsProcessor.cs" />
+    <Compile Include="model\Reporter.cs" />
+    <Compile Include="model\TestingProcessor .cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
