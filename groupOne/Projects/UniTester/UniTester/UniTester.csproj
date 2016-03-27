@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="model\InputsProcessor.cs" />
     <Compile Include="model\Reporter.cs" />
+    <Compile Include="model\TesterXMLSerializer.cs" />
     <Compile Include="model\TestingProcessor .cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,7 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Task\Mult.dll" />
-    <Content Include="Task\Task.xml" />
+    <Content Include="Task\Task.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
