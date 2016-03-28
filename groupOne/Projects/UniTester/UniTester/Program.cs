@@ -10,6 +10,9 @@ namespace UniTester
     {
         static void Main(string[] args)
         {
+            TesterLinqXML load = new TesterLinqXML();
+            load.ReadTestingXML("Task.xml");
+            Console.ReadKey();
         }
     }
 }

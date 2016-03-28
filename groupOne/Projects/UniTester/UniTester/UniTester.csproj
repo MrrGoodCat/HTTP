@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="model\InputsProcessor.cs" />
     <Compile Include="model\Reporter.cs" />
+    <Compile Include="model\TesterLinqXML.cs" />
     <Compile Include="model\TesterXMLSerializer.cs" />
     <Compile Include="model\TestingProcessor .cs" />
     <Compile Include="Program.cs" />
