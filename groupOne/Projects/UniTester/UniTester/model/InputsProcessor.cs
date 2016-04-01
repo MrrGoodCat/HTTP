@@ -83,7 +83,7 @@ namespace UniTester.model
                     [XmlAttribute]
                     public int Id { set; get; }
                     [XmlAttribute]
-                    public string Direction { set; get; }
+                    public bool IsOut { set; get; }
                     [XmlAttribute]
                     public string Type { set; get; }
                     [XmlAttribute]
