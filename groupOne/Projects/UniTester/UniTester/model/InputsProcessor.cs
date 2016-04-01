@@ -14,19 +14,23 @@ namespace UniTester.model
         private string taskFullName;
 
         /// <summary>
-        /// Initialize Processor that operates with 
+        /// Initialize InputProcessor with the given task full name.
         /// </summary>
-        /// <param name="taskFullName"></param>
+        /// <param name="taskFullName">Task full name including path.</param>
         public InputsProcessor(string taskFullName)
         {
             this.taskFullName = taskFullName;
         }
 
 
-        public List<string> GetStudentsList(string taskPath)
+        /// <summary>
+        /// Get the list of Students(Folder names) that are placed near the Task.xml.
+        /// </summary>
+        /// <returns>List of Students(Folder names) that are placed near the Task.xml</returns>
+        public List<string> GetStudentsList()
         {
             List<string> students = new List<string>();
-            foreach (var dir in Directory.GetDirectories(taskPath))
+            foreach (var dir in Directory.GetDirectories(taskFullName))
             {
                 students.Add(Path.GetDirectoryName(dir));
             }
@@ -34,9 +38,10 @@ namespace UniTester.model
         }
 
 
-        public string GetDllFullName(string studentName)
+        public string GetDllNameOfStudent(string studentName)
         {
-
+            Path.GetDirectoryName(dir)
+            Directory.GetDirectories(taskFullName)
             return null;
         }
     }
@@ -103,9 +108,7 @@ namespace UniTester.model
         public string Description { set; get; }
         public Task.Method.Signature.Parameter[] Inputs { set; get; }
         public Results ExpectedResults { set; get; }
-        [XmlIgnore]
         public Results ActualResults { set; get; }
-        [XmlIgnore]
         public State TestState { set; get; }
 
         public enum State
