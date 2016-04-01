@@ -28,7 +28,7 @@
             <MethodReturn Type="System.String" Value="abcdef"/>
           </ExpectedResults>
         </Test>
-        <!-- <Test id="3" description="Check sorting method of String.">
+        <!-- <Test id="3" description="Verify sorting method of String.">
 					<Input>
 						<Parameter type="System.Array" ItemType="System.String">
 							<Item>b</Item>
