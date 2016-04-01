@@ -28,7 +28,7 @@
             <MethodReturn Type="System.String" Value="abcdef"/>
           </ExpectedResults>
         </Test>
-        <!-- <Test id="3" description="Check sorting method of St">
+        <!-- <Test id="3" description="Check sorting method of String.">
 					<Input>
 						<Parameter type="System.Array" ItemType="System.String">
 							<Item>b</Item>
@@ -42,6 +42,7 @@
 							<Item>ab</Item>
 							<Item>b</Item>
               <Item>r</Item>
+              <Item>c</Item>
 						</Parameter>
 					</Output>
 				</Test> -->
