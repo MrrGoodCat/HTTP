@@ -11,9 +11,15 @@ namespace UniTester.model
 {
     class InputsProcessor
     {
+        private string taskFullName;
+
+        /// <summary>
+        /// Initialize Processor that operates with 
+        /// </summary>
+        /// <param name="taskFullName"></param>
         public InputsProcessor(string taskFullName)
         {
-
+            this.taskFullName = taskFullName;
         }
 
 
@@ -27,8 +33,10 @@ namespace UniTester.model
             return students;
         }
 
-        public string GetDllFullName()
+
+        public string GetDllFullName(string studentName)
         {
+
             return null;
         }
     }
@@ -45,7 +53,7 @@ namespace UniTester.model
         [XmlElement("Method")]
         public Method MethodToTest { set; get; }
 
-        public struct Method
+        public class Method
         {
             [XmlAttribute]
             public string ClassName { set; get; }
@@ -55,13 +63,13 @@ namespace UniTester.model
             [XmlElement("Signature")]
             public Signature MethodSignature { set; get; }
 
-            public struct Signature
+            public class Signature
             {
                 [XmlElement("MethodReturn")]
                 public MethodReturn Return { set; get; }
                 public Parameter[] Parameters { set; get; }
 
-                public struct MethodReturn
+                public class MethodReturn
                 {
                     [XmlAttribute]
                     public string Type { set; get; }
@@ -70,7 +78,7 @@ namespace UniTester.model
                 }
 
                 
-                public struct Parameter
+                public class Parameter
                 {
                     [XmlAttribute]
                     public int Id { set; get; }
@@ -107,7 +115,7 @@ namespace UniTester.model
             Failed
         }
                 
-        public struct Results
+        public class Results
         {
             [XmlElement("MethodReturn")]
             public Task.Method.Signature.MethodReturn Return { set; get; }
