@@ -16,8 +16,9 @@ namespace UniTester.model
             assembly = Assembly.LoadFrom(dllname);
         }
 
-        private bool IsMethodInType(Type type, string methodName)
+        private bool IsMethodInType(Type type, Task.Method Method)
         {
+            string methodName = Method.MethodName;
             var MemberTypes = type.MemberType;
             MethodInfo[] methods = type.GetMethods();
 
@@ -31,18 +32,19 @@ namespace UniTester.model
             return false;
         }
 
-        public Type[] GetTypesByMethod(Assembly asm, Task.Method Method)
+        private Type[] GetTypesByMethod(Assembly asm, Task.Method Method)
 
         {
             string MethodName = Method.MethodName;
             Type[] types = asm.GetTypes();
             Type[] testTypes = null;
+
             int i = 0;
 
             foreach (Type t in types)
             {
                 MethodInfo[] methods = t.GetMethods();
-
+                
                 foreach (MethodInfo method in methods)
                 {
                     if (method.Name.ToLower().Contains(MethodName) || method.Name.ToUpper().Contains(MethodName))
@@ -56,9 +58,10 @@ namespace UniTester.model
             return testTypes;
         }
 
-        public MethodInfo[] GetMethodsInfo(string MethodName, Type type)
+        private MethodInfo[] GetMethodsInfo(Type type, Task.Method Method)
         {
             MethodInfo[] testMethods = null;
+            string MethodName = Method.MethodName;
             MethodInfo[] methods = type.GetMethods();
             int i = 0;
 
@@ -74,7 +77,7 @@ namespace UniTester.model
             return testMethods;
         }
 
-        public MethodInfo GetMethodBySignature(MethodInfo[] methods, Task.Method.Signature Signature)
+        private MethodInfo GetMethodBySignature(MethodInfo[] methods, Task.Method.Signature Signature)
         {
 
             MethodInfo methodToTest = null;
@@ -116,77 +119,44 @@ namespace UniTester.model
             return false;
         }
 
-        public object RunMethod(MethodInfo method, object[] parameters)
+        public object RunMethod(MethodInfo method, Task.Method TestMethod, object[] parameters)
         {
-
             object instance = new object();
+
             MethodInfo TestingMethod = null;
-            assembly.GetTypes();
+            Type TestType = null;
 
-
-            if (!method.IsGenericMethodDefinition)
+            foreach (Type type in GetTypesByMethod(assembly, TestMethod))
             {
-                instance = Activator.CreateInstance(method.GetType());
-                TestingMethod = method;
-            }
-            else
-            {
-                //MethodInfo GenericMethod = method.GetGenericMethodDefinition();
-                //instance = (method.GetType())Activator.CreateInstance(method.GetType());
+                if(GetMethodBySignature(GetMethodsInfo(type, TestMethod), TestMethod.MethodSignature) == method)
+                {
+                    TestType = type;
+                    if (!method.IsGenericMethodDefinition)
+                    {
+                        instance = Activator.CreateInstance(type);
+                        TestingMethod = method;
+                    }
+                    else
+                    {
+                        //TestingMethod = method.GetGenericMethodDefinition();
+                        //Type[] GenericParams = TestingMethod.GetGenericArguments();
 
+                        //// ====How to get generic type correctly????=====
+                        
+                        //instance = Activator.CreateInstance(type.GetGenericTypeDefinition());
+                    }
+                }
+                
             }
-            /// if static, if generic...
-
-            object testmethod = method.Invoke(instance, parameters);
+            
+            object testmethod = TestingMethod.Invoke(instance, parameters);
 
 
             return testmethod;
         }
 
-        //public static Type getTypes(Assembly asm, string TestClassName)
-        //{
-        //    Type[] types = asm.GetTypes();
-        //    Type testType = null;
-
-        //    foreach (Type t in types)
-        //    {
-
-        //        if (t.Name.ToLower().Contains(TestClassName))
-        //        {
-        //            testType = t;
-        //            TestData.TypeToTest = t;
-        //        }
-        //    }
-
-        //    return testType;
-        //}
-
-        //public static MethodInfo getMethodToTest(Assembly asm, string TestClassName, string TestMethodName)
-        //{         
-        //    Type myType = TestData.TypeToTest;
-
-        //    MethodInfo TestMethod = null;
-
-
-        //    var MemberTypes = myType.MemberType;
-
-        //    MethodInfo[] methods = myType.GetMethods();
-
-        //    foreach (MethodInfo method in methods)
-        //    {
-        //        if (method.Name.ToLower().Contains(TestMethodName))
-        //        {
-        //            if (method.ContainsGenericParameters)
-        //                TestData.GenericArguments = method.GetGenericArguments();
-
-        //            TestMethod = method;
-        //            TestData.MethodToTest = method;
-        //        }
-
-        //    }
-
-        //    return TestMethod;
-        //}
-
+        
     }
+
+     
 }
