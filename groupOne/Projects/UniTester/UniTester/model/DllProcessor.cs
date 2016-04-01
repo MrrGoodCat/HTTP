@@ -31,50 +31,50 @@ namespace Reflaction
             return false;
         }
 
-        public static Type getTypes(Assembly asm, string TestClassName)
-        {
-            Type[] types = asm.GetTypes();
-            Type testType = null;
+        //public static Type getTypes(Assembly asm, string TestClassName)
+        //{
+        //    Type[] types = asm.GetTypes();
+        //    Type testType = null;
 
-            foreach (Type t in types)
-            {
+        //    foreach (Type t in types)
+        //    {
 
-                if (t.Name.ToLower().Contains(TestClassName))
-                {
-                    testType = t;
-                    TestData.TypeToTest = t;
-                }
-            }
+        //        if (t.Name.ToLower().Contains(TestClassName))
+        //        {
+        //            testType = t;
+        //            TestData.TypeToTest = t;
+        //        }
+        //    }
 
-            return testType;
-        }
+        //    return testType;
+        //}
 
-        public static MethodInfo getMethodToTest(Assembly asm, string TestClassName, string TestMethodName)
-        {         
-            Type myType = TestData.TypeToTest;
+        //public static MethodInfo getMethodToTest(Assembly asm, string TestClassName, string TestMethodName)
+        //{         
+        //    Type myType = TestData.TypeToTest;
 
-            MethodInfo TestMethod = null;
+        //    MethodInfo TestMethod = null;
             
 
-            var MemberTypes = myType.MemberType;
+        //    var MemberTypes = myType.MemberType;
 
-            MethodInfo[] methods = myType.GetMethods();
+        //    MethodInfo[] methods = myType.GetMethods();
 
-            foreach (MethodInfo method in methods)
-            {
-                if (method.Name.ToLower().Contains(TestMethodName))
-                {
-                    if (method.ContainsGenericParameters)
-                        TestData.GenericArguments = method.GetGenericArguments();
+        //    foreach (MethodInfo method in methods)
+        //    {
+        //        if (method.Name.ToLower().Contains(TestMethodName))
+        //        {
+        //            if (method.ContainsGenericParameters)
+        //                TestData.GenericArguments = method.GetGenericArguments();
 
-                    TestMethod = method;
-                    TestData.MethodToTest = method;
-                }
+        //            TestMethod = method;
+        //            TestData.MethodToTest = method;
+        //        }
                     
-            }
+        //    }
             
-            return TestMethod;
-        }
+        //    return TestMethod;
+        //}
 
     }
 }

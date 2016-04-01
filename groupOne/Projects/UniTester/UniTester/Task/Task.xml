@@ -1,32 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Tasks>
-  <Task id="1" name="Swapper" description="Check swap method.">
-    <Method className="SwapWithXML.abSwap" methodName="Swap">
+<ArrayOfTask>
+  <Task Id="1" Name="Swapper" Description="Check swap method.">
+    <Method className="SwapWithXML.abSwap" MethodName="Swap">
       <Signature>
-        <ReturnType type="System.String"/>
+        <MethodReturn Type="System.String"/>
         <Parameters>
-          <Param id="1" direction="input" type="int"/>
-          <Param id="2" direction="input" type="int"/>
+          <Parameter Id="1" Direction="input" Type="int"/>
+          <Parameter Id="2" Direction="input" Type="int"/>
         </Parameters>
       </Signature>
       <TestSet>
-        <Test id="1" description="Check swap method with Int32.">
+        <Test Id="1" Description="Check swap method with Int32.">
           <Input>
-            <Parameter id="1" type="System.Int32" >1</Parameter>
-            <Parameter id="2" type="System.Int32" >2</Parameter>
+            <Parameter Id="2" Type="System.Int32" Value="1"/>
+            <Parameter Id="1" Type="System.Int32" Value="2"/>
           </Input>
-          <Output>
-            <Parameter type="System.String">2</Parameter>
-          </Output>
+          <ExpectedResults>
+            <MethodReturn Type="System.String" Value="2"/>
+          </ExpectedResults>
         </Test>
-        <Test id="2" description="Check swap method with String.">
+        <Test Id="2" Description="Check swap method with String.">
           <Input>
-            <Parameter type="System.String">a</Parameter>
-            <Parameter type="System.String">b</Parameter>
+            <Parameter Type="System.String" Value="abc"/>
+            <Parameter Type="System.String" Value="def"/>
           </Input>
-          <Output>
-            <Parameter type="System.String">b</Parameter>
-          </Output>
+          <ExpectedResults>
+            <MethodReturn Type="System.String" Value="abcdef"/>
+          </ExpectedResults>
         </Test>
         <!-- <Test id="3" description="Check sorting method of String.">
 					<Input>
@@ -47,4 +47,4 @@
       </TestSet>
     </Method>
   </Task>
-</Tasks>
+</ArrayOfTask>
