@@ -11,17 +11,28 @@ namespace UniTester.model
 {
     class InputsProcessor
     {
-        private string taskFullName;
+        public string TaskName { get; }
+        public string TaskPath { get; }
+        public string TaskFullName { get; }
+        public List<Task> Tasks { get; }
 
         /// <summary>
-        /// Initialize InputProcessor with the given task full name.
+        /// Initialize InputProcessor with the given task full name. Set TaskName and TaskPath. Load CurrentTask from XML.
         /// </summary>
         /// <param name="taskFullName">Task full name including path.</param>
         public InputsProcessor(string taskFullName)
         {
-            this.taskFullName = taskFullName;
+            TaskFullName = taskFullName;
+            TaskName = Path.GetFileName(taskFullName);
+            TaskPath = Path.GetDirectoryName(taskFullName);
+            Tasks = LoadTaskFromXML(taskFullName);
         }
 
+        private List<Task> LoadTaskFromXML(string taskFullName)
+        {
+            TesterXMLSerializer<List<Task>> xmlSerializer = new TesterXMLSerializer<List<Task>>();
+            return xmlSerializer.Deserialize(TaskFullName);
+        }
 
         /// <summary>
         /// Get the list of Students(Folder names) that are placed near the Task.xml.
@@ -30,19 +41,27 @@ namespace UniTester.model
         public List<string> GetStudentsList()
         {
             List<string> students = new List<string>();
-            foreach (var dir in Directory.GetDirectories(taskFullName))
+            foreach (var dir in Directory.GetDirectories(TaskPath))
             {
-                students.Add(Path.GetDirectoryName(dir));
+                students.Add(new DirectoryInfo(dir).Name);
             }
             return students;
         }
 
-
-        public string GetDllNameOfStudent(string studentName)
+        /// <summary>
+        /// Get the list of all files according to file filter (e.g. "*.dll").
+        /// </summary>
+        /// <param name="studentFolder">Name of the Student folder</param>
+        /// <param name="filePattern">String file filter. For example "*.dll".</param>
+        /// <returns></returns>
+        public List<string> GetStudentFilesList(string studentFolder, string filePattern)
         {
-            Path.GetDirectoryName(dir)
-            Directory.GetDirectories(taskFullName)
-            return null;
+            List<string> files = new List<string>();
+            foreach (var file in Directory.GetFiles(String.Format($@"{TaskPath}\{studentFolder}"), filePattern))
+            {
+                files.Add(file);
+            }
+            return files;
         }
     }
 
