@@ -11,9 +11,15 @@ namespace UniTester.model
 {
     class InputsProcessor
     {
+        private string taskFullName;
+
+        /// <summary>
+        /// Initialize Processor that operates with 
+        /// </summary>
+        /// <param name="taskFullName"></param>
         public InputsProcessor(string taskFullName)
         {
-
+            this.taskFullName = taskFullName;
         }
 
 
@@ -27,8 +33,10 @@ namespace UniTester.model
             return students;
         }
 
-        public string GetDllFullName()
+
+        public string GetDllFullName(string studentName)
         {
+
             return null;
         }
     }
@@ -45,25 +53,23 @@ namespace UniTester.model
         [XmlElement("Method")]
         public Method MethodToTest { set; get; }
 
-        public struct Method
+        public class Method
         {
             [XmlAttribute]
             public string ClassName { set; get; }
             [XmlAttribute]
             public string MethodName { set; get; }
-            [XmlElement("testSet")]
             public Test[] TestSet { set; get; }
             [XmlElement("Signature")]
             public Signature MethodSignature { set; get; }
 
-            public struct Signature
+            public class Signature
             {
                 [XmlElement("MethodReturn")]
                 public MethodReturn Return { set; get; }
-                [XmlElement("Parameters")]
                 public Parameter[] Parameters { set; get; }
 
-                public struct MethodReturn
+                public class MethodReturn
                 {
                     [XmlAttribute]
                     public string Type { set; get; }
@@ -71,7 +77,8 @@ namespace UniTester.model
                     public string Value { set; get; }
                 }
 
-                public struct Parameter
+                
+                public class Parameter
                 {
                     [XmlAttribute]
                     public int Id { set; get; }
@@ -91,10 +98,10 @@ namespace UniTester.model
     public class Test
     {
         [XmlAttribute]
-        public string Id { set; get; }
+        public int Id { set; get; }
         [XmlAttribute]
         public string Description { set; get; }
-        public Input[] Inputs { set; get; }
+        public Task.Method.Signature.Parameter[] Inputs { set; get; }
         public Results ExpectedResults { set; get; }
         [XmlIgnore]
         public Results ActualResults { set; get; }
@@ -108,13 +115,9 @@ namespace UniTester.model
             Failed
         }
                 
-        public struct Input
+        public class Results
         {
-            public Task.Method.Signature.Parameter[] Parameters { set; get; }
-        }
-
-        public struct Results
-        {
+            [XmlElement("MethodReturn")]
             public Task.Method.Signature.MethodReturn Return { set; get; }
         }
 
