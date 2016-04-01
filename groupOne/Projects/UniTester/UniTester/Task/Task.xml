@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ArrayOfTask>
   <Task Id="1" Name="Swapper" Description="Check swap method.">
-    <Method className="SwapWithXML.abSwap" MethodName="Swap">
+    <Method ClassName="SwapWithXML.abSwap" MethodName="Swap">
       <Signature>
         <MethodReturn Type="System.String"/>
         <Parameters>
@@ -11,19 +11,19 @@
       </Signature>
       <TestSet>
         <Test Id="1" Description="Check swap method with Int32.">
-          <Input>
+          <Inputs>
             <Parameter Id="2" Type="System.Int32" Value="1"/>
             <Parameter Id="1" Type="System.Int32" Value="2"/>
-          </Input>
+          </Inputs>
           <ExpectedResults>
             <MethodReturn Type="System.String" Value="2"/>
           </ExpectedResults>
         </Test>
         <Test Id="2" Description="Check swap method with String.">
-          <Input>
+          <Inputs>
             <Parameter Type="System.String" Value="abc"/>
             <Parameter Type="System.String" Value="def"/>
-          </Input>
+          </Inputs>
           <ExpectedResults>
             <MethodReturn Type="System.String" Value="abcdef"/>
           </ExpectedResults>

@@ -51,7 +51,6 @@ namespace UniTester.model
             public string ClassName { set; get; }
             [XmlAttribute]
             public string MethodName { set; get; }
-            [XmlElement("testSet")]
             public Test[] TestSet { set; get; }
             [XmlElement("Signature")]
             public Signature MethodSignature { set; get; }
@@ -60,7 +59,6 @@ namespace UniTester.model
             {
                 [XmlElement("MethodReturn")]
                 public MethodReturn Return { set; get; }
-                [XmlElement("Parameters")]
                 public Parameter[] Parameters { set; get; }
 
                 public struct MethodReturn
@@ -71,6 +69,7 @@ namespace UniTester.model
                     public string Value { set; get; }
                 }
 
+                
                 public struct Parameter
                 {
                     [XmlAttribute]
@@ -91,10 +90,10 @@ namespace UniTester.model
     public class Test
     {
         [XmlAttribute]
-        public string Id { set; get; }
+        public int Id { set; get; }
         [XmlAttribute]
         public string Description { set; get; }
-        public Input[] Inputs { set; get; }
+        public Task.Method.Signature.Parameter[] Inputs { set; get; }
         public Results ExpectedResults { set; get; }
         [XmlIgnore]
         public Results ActualResults { set; get; }
@@ -108,13 +107,9 @@ namespace UniTester.model
             Failed
         }
                 
-        public struct Input
-        {
-            public Task.Method.Signature.Parameter[] Parameters { set; get; }
-        }
-
         public struct Results
         {
+            [XmlElement("MethodReturn")]
             public Task.Method.Signature.MethodReturn Return { set; get; }
         }
 
