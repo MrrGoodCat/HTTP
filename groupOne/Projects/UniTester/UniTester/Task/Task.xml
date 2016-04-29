@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ArrayOfTask>
   <Task Id="1" Name="Swapper" Description="Check swap method.">
-    <Method ClassName="SwapWithXML.abSwap" MethodName="Swap">
+    <Method ClassName="SwapWithXML.abSwap" MethodName="multiplication">
       <Signature>
         <MethodReturn Type="System.String"/>
         <Parameters>
