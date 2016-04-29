@@ -128,7 +128,7 @@ namespace UniTester.model
             
             foreach(ParameterInfo parameter in TestingMethod.GetParameters())
             {
-                if (parameter.ParameterType.FullName.ToLower().Contains(ParameterToTest.Type) &&
+                if (parameter.ParameterType.FullName.ToLower().Contains(ParameterToTest.Type.ToLower()) &&
                     parameter.Position == ParameterToTest.Id-1)
                 {
                     ParameterType = parameter.ParameterType;
