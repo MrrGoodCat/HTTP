@@ -140,14 +140,15 @@ namespace UniTester.model
                         ParameterType = parameter.ParameterType;
                         return ParameterType;
                     }
-
                 }
 
                 /// int for test
-                else { ParameterType = typeof(int); }
-
-
-                /// else --exception of incorrect method parameters
+                else
+                {
+                    TestingTypes temp = new TestingTypes();
+                    ParameterType = temp.GetTypetoTest(ParameterToTest) ;
+                }
+                
             }
 
             return null;
@@ -203,7 +204,7 @@ namespace UniTester.model
 
         }
 
-        public object RunMethod(Method TestMethod, Method.Signature.Parameter[] parameters)
+        public object RunMethod(Method TestMethod, Method.Signature.Parameter[] parameters, Method.Signature.MethodReturn returnType)
         {
             object instance = new object();
             MethodInfo TestingMethod = null;
@@ -230,15 +231,13 @@ namespace UniTester.model
 
                     else
                     {
-
-                        TestType = type.MakeGenericType(typeof(T));
-
-                        /// int type only for testing
-                        TestingMethod = TestingMethod.MakeGenericMethod(typeof(int));
+                        TestingTypes temp = new TestingTypes();
+                        TestType = temp.GetTypetoTest(returnType);
+                        TestingMethod = TestingMethod.MakeGenericMethod(typeof(T));
                         instance = Activator.CreateInstance(TestType);
 
                         //// ====How to get generic type correctly????=====
-                        testmethod = (int)TestingMethod.Invoke(instance, TestParameters);
+                        testmethod = (T)TestingMethod.Invoke(instance, TestParameters);
 
                     }
 
@@ -249,5 +248,39 @@ namespace UniTester.model
             return testmethod;
         }
 
+    }
+
+    class TestingTypes : Task.Method
+    {
+        object TypeToTest;
+
+        public Type GetTypetoTest(Signature.Parameter input)
+        {
+            if (input.Type.ToLower().Contains("int"))
+                TypeToTest = Activator.CreateInstance(typeof(int));
+            if (input.Type.ToLower().Contains("string"))
+                TypeToTest = Activator.CreateInstance(typeof(string));
+            if (input.Type.ToLower().Contains("bool"))
+                TypeToTest = Activator.CreateInstance(typeof(bool));
+            if (input.Type.ToLower().Contains("char"))
+                TypeToTest = Activator.CreateInstance(typeof(char));
+            if (input.Type.ToLower().Contains("char"))
+                TypeToTest = Activator.CreateInstance(typeof(char));
+            return TypeToTest.GetType();
+        }
+        public Type GetTypetoTest(Signature.MethodReturn input)
+        {
+            if (input.Type.ToLower().Contains("int"))
+                TypeToTest = Activator.CreateInstance(typeof(int));
+            if (input.Type.ToLower().Contains("string"))
+                TypeToTest = Activator.CreateInstance(typeof(string));
+            if (input.Type.ToLower().Contains("bool"))
+                TypeToTest = Activator.CreateInstance(typeof(bool));
+            if (input.Type.ToLower().Contains("char"))
+                TypeToTest = Activator.CreateInstance(typeof(char));
+            if (input.Type.ToLower().Contains("char"))
+                TypeToTest = Activator.CreateInstance(typeof(char));
+            return TypeToTest.GetType();
+        }
     }
 }

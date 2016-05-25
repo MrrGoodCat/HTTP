@@ -15,12 +15,17 @@ namespace UniTester
             var studentList = ip.GetStudentsList();
             var FirstStudentFileList = ip.GetStudentFilesList(studentList[0], "*.txt");
 
-            DllProcessor test = new DllProcessor(@"E:\GitFolder\springfield\groupOne\Projects\UniTester\UniTester\Task\Student1\Mult.dll");
+            TestMethodExecution<int> test = new TestMethodExecution<int>(@"E:\GitFolder\springfield\groupOne\Projects\UniTester\UniTester\Task\Student1\Mult.dll");
            
             
-            
-           object Testing = test.RunMethod(ip.Tasks[0].MethodToTest, ip.Tasks[0].MethodToTest.MethodSignature.Parameters);
-            Console.ReadKey();
+            for(int i = 0; i < ip.Tasks[0].MethodToTest.TestSet.Length; i++)
+            {
+                object Testing = test.RunMethod(ip.Tasks[0].MethodToTest, ip.Tasks[0].MethodToTest.TestSet[i].Inputs, 
+                    ip.Tasks[0].MethodToTest.MethodSignature.Return);
+                Console.WriteLine(Testing.ToString());
+                Console.ReadKey();
+            }
+           
         }
 
     }
