@@ -7,32 +7,17 @@ using System.Reflection;
 
 namespace UniTester.model
 {
-    public class DllProcessor
+    public class DllProcessor : Task
     {
-        private Assembly assembly;
+        
+        public Assembly assembly;
 
         public DllProcessor(string dllname)
         {
             assembly = Assembly.LoadFrom(dllname);
         }
 
-        private bool IsMethodInType(Type type, Task.Method Method)
-        {
-            string methodName = Method.MethodName;
-            var MemberTypes = type.MemberType;
-            MethodInfo[] methods = type.GetMethods();
-
-            foreach (MethodInfo method in methods)
-            {
-                if (method.Name == methodName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private Type[] GetTypesByMethod(Assembly asm, Task.Method Method)
+        public Type[] GetTypesByMethod(Assembly asm, Method Method)
 
         {
             string MethodName = Method.MethodName;
@@ -47,7 +32,7 @@ namespace UniTester.model
                 
                 foreach (MethodInfo method in methods)
                 {
-                    if (method.Name.ToLower().Contains(MethodName) || method.Name.ToUpper().Contains(MethodName))
+                    if (method.Name.ToLower().Contains(MethodName.ToLower()))
                     {
                         testTypes[i-1] = t;
                         i++;
@@ -58,7 +43,7 @@ namespace UniTester.model
             return testTypes;
         }
 
-        private MethodInfo[] GetMethodsInfo(Type type, Task.Method Method)
+        public MethodInfo[] GetMethodsInfo(Type type, Method Method)
         {
             
             string MethodName = Method.MethodName;
@@ -68,7 +53,7 @@ namespace UniTester.model
 
             foreach (MethodInfo method in methods)
             {
-                if (method.Name.ToLower().Contains(MethodName) || method.Name.ToUpper().Contains(MethodName))
+                if (method.Name.ToLower().Contains(MethodName.ToLower()))
                 {
                     testMethods[i-1] = method;
                     i++;
@@ -78,7 +63,7 @@ namespace UniTester.model
             return testMethods;
         }
 
-        private MethodInfo GetMethodBySignature(MethodInfo[] methods, Task.Method.Signature Signature)
+        public MethodInfo GetMethodBySignature(MethodInfo[] methods, Method.Signature Signature)
         {
 
             MethodInfo methodToTest = null;
@@ -94,9 +79,9 @@ namespace UniTester.model
             return null;
         }
 
-        private bool ValidateMethodBySignature(MethodInfo method, Task.Method.Signature Signature)
+        public bool ValidateMethodBySignature(MethodInfo method, Task.Method.Signature Signature)
         {
-            Task.Method.Signature mySignature = new Task.Method.Signature();
+            Method.Signature mySignature = new Method.Signature();
 
             mySignature = Signature;
 
@@ -107,41 +92,69 @@ namespace UniTester.model
             {
                 for (int i = 0; i < newParameters.Length; i++)
                 {
-                    if (newParameters[i].ParameterType.FullName.ToString().ToLower().Contains(mySignature.Parameters[i].Type))
+                    if (!newParameters[i].ParameterType.IsGenericParameter)
                     {
-                        if (newParameters[i].IsOut == mySignature.Parameters[i].IsOut)
+                        if (newParameters[i].ParameterType.FullName.ToString().ToLower().Contains(mySignature.Parameters[i].Type.ToLower()))
                         {
-                            return true;
+                            if (newParameters[i].IsOut == mySignature.Parameters[i].IsOut)
+                            {
+                                return true;
 
+                            }
                         }
                     }
 
+                    else
+                    {
+                        if (newParameters[i].IsOut == mySignature.Parameters[i].IsOut)
+                            return true;                        
+                    }
+                    
                 }
             }
             return false;
         }
+        
+    }
 
-        private Type getParameterType(MethodInfo TestingMethod, Task.Method.Signature.Parameter ParameterToTest)
+    public class TestMethodExecution<T> : DllProcessor where T : IConvertible, new()
+    {
+
+        public TestMethodExecution(string dllname) : base(dllname)
+        {
+        }
+
+        private Type getParameterType(MethodInfo TestingMethod, Method.Signature.Parameter ParameterToTest)
         {
             Type ParameterType = null;
             int ParametersArrLength = TestingMethod.GetParameters().Length;
-            
-            foreach(ParameterInfo parameter in TestingMethod.GetParameters())
+
+            foreach (ParameterInfo parameter in TestingMethod.GetParameters())
             {
-                if (parameter.ParameterType.FullName.ToLower().Contains(ParameterToTest.Type.ToLower()) &&
-                    parameter.Position == ParameterToTest.Id-1)
+                if (!parameter.ParameterType.IsGenericParameter)
+
                 {
-                    ParameterType = parameter.ParameterType;
-                    return ParameterType;
+                    if (parameter.ParameterType.FullName.ToLower().Contains(ParameterToTest.Type.ToLower()) &&
+                    parameter.Position == ParameterToTest.Id - 1)
+                    {
+                        ParameterType = parameter.ParameterType;
+                        return ParameterType;
+                    }
+
                 }
+
+                /// int for test
+                else { ParameterType = typeof(int); }
+
+
                 /// else --exception of incorrect method parameters
             }
 
-       return null;
+            return null;
 
-       }
+        }
 
-        private object[] createParametersArr(MethodInfo TestingMethod, Task.Method.Signature.Parameter[] parameters)
+        private object[] createParametersArr(MethodInfo TestingMethod, Method.Signature.Parameter[] parameters)
         {
             object[] ParametersArr = new object[parameters.Length];
             ParameterInfo[] Param = new ParameterInfo[parameters.Length];
@@ -149,69 +162,92 @@ namespace UniTester.model
             for (int i = 0; i < ParametersArr.Length; i++)
             {
                 Type ParameterType = getParameterType(TestingMethod, parameters[i]);
-                ParametersArr[i] = Activator.CreateInstance(ParameterType);
-                ParametersArr[i] = parameters[i].Value;
-                ParametersArr[i] = Convert.ChangeType(ParametersArr[i], ParameterType);
-                
-            }
 
-            foreach(ParameterInfo Parameter in TestingMethod.GetParameters())
-            {
-                for (int i = 0; i < ParametersArr.Length; i++)
+                if (ParameterType != null)
                 {
-                    
-                    if (Parameter.IsOut)
+                    if (!ParameterType.ContainsGenericParameters)
                     {
-                        Param[i] = Parameter;
+                        ParametersArr[i] = Activator.CreateInstance(ParameterType);
+                        ParametersArr[i] = parameters[i].Value;
+                        ParametersArr[i] = Convert.ChangeType(ParametersArr[i], ParameterType);
                     }
+
+                    else
+                    {
+
+                        ParameterType = ParameterType.MakeGenericType();
+                        ParametersArr[i] = (T)Activator.CreateInstance(ParameterType, ParameterType.GetGenericTypeDefinition());
+                        ParametersArr[i] = parameters[i].Value;
+                        /// define the test type
+                    }
+
+
+
                 }
-                
+
             }
 
+            //foreach (ParameterInfo Parameter in TestingMethod.GetParameters())
+            //{
+            //    for (int i = 0; i < ParametersArr.Length; i++)
+            //    {
 
+            //        if (Parameter.IsOut)
+            //        {
+            //            Param[i] = Parameter;
+            //        }
+            //    }
+
+            //}
             return ParametersArr;
-            
+
         }
-       
-        public object RunMethod(Task.Method TestMethod, Task.Method.Signature.Parameter[] parameters)
+
+        public object RunMethod(Method TestMethod, Method.Signature.Parameter[] parameters)
         {
             object instance = new object();
             MethodInfo TestingMethod = null;
             object[] TestParameters = new object[parameters.Length];
             Type TestType = null;
+            object testmethod = null;
 
             foreach (Type type in GetTypesByMethod(assembly, TestMethod))
             {
                 MethodInfo method = GetMethodBySignature(GetMethodsInfo(type, TestMethod), TestMethod.MethodSignature);
+
                 if (method != null)
                 {
                     TestType = type;
-                    if (!method.IsGenericMethodDefinition)
-                        TestingMethod = method;
-                    else
-                    {
-                        Type[] GenericArguments = TestingMethod.GetGenericArguments();
-                        TestingMethod = method.MakeGenericMethod(GenericArguments);
+                    TestingMethod = method;
 
-                        //// ====How to get generic type correctly????=====
-                        
+                    if (!method.ContainsGenericParameters)
+                    {
+
+                        instance = Activator.CreateInstance(TestType);
+                        TestParameters = createParametersArr(TestingMethod, parameters);
+                        testmethod = TestingMethod.Invoke(instance, TestParameters);
                     }
 
-                    TestParameters = createParametersArr(TestingMethod, parameters);
-                    
-                    instance = Activator.CreateInstance(TestType);
+                    else
+                    {
+
+                        TestType = type.MakeGenericType(typeof(T));
+
+                        /// int type only for testing
+                        TestingMethod = TestingMethod.MakeGenericMethod(typeof(int));
+                        instance = Activator.CreateInstance(TestType);
+
+                        //// ====How to get generic type correctly????=====
+                        testmethod = (int)TestingMethod.Invoke(instance, TestParameters);
+
+                    }
+
                 }
-                
+
             }
-            
-            
-            object testmethod = TestingMethod.Invoke(instance, TestParameters);
 
             return testmethod;
         }
 
-        
     }
-
-     
 }
