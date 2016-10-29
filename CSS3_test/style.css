@@ -1,0 +1,67 @@
+
+h2{
+
+    background: url(kosmos_fon_siniy_tochki_73340_3840x2400.jpg) no-repeat #ddeea5 center top;
+    background-size:cover;
+    }
+h1 {color: brown;
+
+}
+#header {color: crimson;}
+h3.style {color:blueviolet;}
+h3 i { color: chartreuse;
+
+}
+h3#ex:first-letter { color: black;}
+
+.href
+{
+    color: aqua;
+}
+.href:hover
+{
+    color: chartreuse;
+}
+
+p
+{
+    color: aliceblue;
+}
+
+#textStyle
+{
+    font-size: 1.1em;
+}
+
+#textStyle:hover
+{
+    font-size: 1.3em;
+}
+
+#testBlock
+{
+    background-image: url(dJlH0Vby3iQ.jpeg);
+    border: 2px solid silver;
+    height: 50px;
+}
+
+.MainHead
+{
+    background-color: cornflowerblue;
+    height: 80px;
+}
+
+#mainCenter
+{
+    position: absolute;
+    width: 80%;
+    left: 10%;
+}
+
+#icon
+{
+    width: 117px;
+    background-image: url(blue_icone.png);
+    position: absolute;
+    left: 0%;
+}
